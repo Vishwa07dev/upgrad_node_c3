@@ -69,22 +69,22 @@ const students = {
  * GET 127.0.0.1:8000/studentApp/classes/1/students/vishwa
  * 
  */
-app.get("/studentApp/classes/:classId/students/:studentName", (req, res)=>{
-    
+app.get("/studentApp/classes/:classId/students/:studentName", (req, res) => {
+
   /*
      Reading the path param
    */
-   
-    //  req.params -> Object that contains all the path param
 
-   const classId = req.params.classId ;
-   console.log(classId);
-   const studentName = req.params.studentName ;
-   console.log(studentName);
+  //  req.params -> Object that contains all the path param
 
-   return res.status(200).send({
-     studentDetails : (students[classId])[studentName]
-   })
+  const classId = req.params.classId;
+  console.log(classId);
+  const studentName = req.params.studentName;
+  console.log(studentName);
+
+  return res.status(200).send({
+    studentDetails: (students[classId])[studentName]
+  })
 })
 
 
@@ -96,18 +96,35 @@ app.get("/studentApp/classes/:classId/students/:studentName", (req, res)=>{
  * 
  */
 
-app.get("/studentApp/classes", (req, res)=>{
-     
-     const classId = req.query.classId ;
+app.get("/studentApp/classes", (req, res) => {
 
-     if(classId){
-       res.status(200).send(students[classId]);
-     }else{
-       res.status(400).send({
-         message : "Query param was not provided"
-       })
-     }
-})
+  const classId = req.query.classId;
+
+  if (classId) {
+    res.status(200).send(students[classId]);
+  } else {
+    res.status(400).send({
+      message: "Query param was not provided"
+    })
+  }
+});
+
+app.get("/studentApp/classes/:classId/students", (req, res) => {
+
+  const classId = req.params.classId;
+  const studentName = req.query.studentName;
+
+  if (studentName) {
+    res.status(200).send({
+      studentDetails: (students[classId])[studentName]
+    })
+  } else {
+    res.status(200).send({
+      studentDetails: students[classId]
+    })
+  }
+});
+
 
 
 
@@ -115,7 +132,27 @@ app.get("/studentApp/classes", (req, res)=>{
  * 
  * Code to read the request body
  * 
+ * POST 127.0.0.1:8000/classes/1/students
+ * 
+ * Above API would like to add student in a given class
+ * 
+ * Request Body
+ * 
+ * {
+      name: "Alia",
+      age: 27,
+      subject: "Bollywood"
+    }
+ * 
  */
+app.use(express.json());
+// Convert the json request body to JS Object so that it could be inferred.
+app.post("/studentApp/classes/:classId/students", (req, res)=>{
+
+  const classId = req.params.classId;
+  (students[classId])[req.body.name] = req.body;
+  res.status(201).send(students[classId]);
+});
 
 
 app.listen(8000, () => {
