@@ -1,3 +1,4 @@
+const e = require("express");
 const express = require("express");
 
 //console.log(express);
@@ -91,7 +92,23 @@ app.get("/studentApp/classes/:classId/students/:studentName", (req, res)=>{
  * 
  * Code to read the Query Param
  * 
+ * 127.0.0.1:8000/studentApp/classes?classId=2
+ * 
  */
+
+app.get("/studentApp/classes", (req, res)=>{
+     
+     const classId = req.query.classId ;
+
+     if(classId){
+       res.status(200).send(students[classId]);
+     }else{
+       res.status(400).send({
+         message : "Query param was not provided"
+       })
+     }
+})
+
 
 
 /**
