@@ -155,6 +155,14 @@ app.post("/studentApp/classes/:classId/students", (req, res)=>{
 });
 
 
+app.get("/ab+cd", (req,res)=>{
+  res.status(200).send("Hello World !");
+})
+
+
+const teachersRoute = require("./teachers.route");
+app.use("/teachers", teachersRoute);
+
 app.listen(8000, () => {
   console.log('Server started');
 })
