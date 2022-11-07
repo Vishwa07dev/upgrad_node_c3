@@ -13,4 +13,10 @@ module.exports = (app)=>{
      */
     app.get("/idea_app/api/v1/ideas",ideaController.getIdeas);
 
+    app.post("/idea_app/api/v1/ideas", ideaController.createIdea);
+
+    app.get("/idea_app/api/v1/ideas/:id", ideaController.getIdeaBasedOnId);
+
+    app.put("/idea_app/api/v1/ideas/:id", ideaController.updateIdea);
+
 }
