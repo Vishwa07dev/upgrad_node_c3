@@ -16,11 +16,34 @@ const addressSchema = new mongoose.Schema({
 });
 
 const studentSchema = new mongoose.Schema({
-    name : String,
-    age : Number,
-    email : String,
-    createdAt : Date,
-    updatedAt : Date,
+    name : {
+        type : String,
+        required : true
+    },
+    age : {
+        type : Number,
+        required : true,
+        min : 16 // 
+    },
+    email : {
+        type : String,
+        required : true,
+        lowercase : true,
+        minLength : 10
+    },
+    createdAt : {
+       type : Date,
+       default : () => {
+           return Date.now()
+       },
+       immutable : true
+    },
+    updatedAt : {
+        type : Date,
+        default : () =>{
+            return Date.now();
+        }
+    },
     subjects : [String],
     address : addressSchema
 })
