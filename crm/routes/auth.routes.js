@@ -9,4 +9,6 @@ module.exports = (app)=>{
      * Req Body
      */
     app.post("/crm/api/v1/auth/signup", authController.signup);
+
+    app.post("/crm/api/v1/auth/signin", authController.signin);
 }
