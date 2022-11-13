@@ -22,12 +22,11 @@ async function dbOperation() {
     /**
      * Code to insert some student in the db
      */
-    try {
+  /**   try {
         const student = await studentModel.create({
             name: "Vishwa",
             age: 17,
             email : "abc132242@xyz",
-            subjects: ["Maths", "English"],
             address: {
                 lane1: "Lane1",
                 lane2: "Lane2",
@@ -40,6 +39,26 @@ async function dbOperation() {
         console.log(student);
     } catch (e) {
         console.log(e.message);
-    }
+    }  **/
 
+
+
+
+    /**
+     * I want read some documents
+     * 
+     * With the help of id
+     */
+
+    const student  = await studentModel.findById("63691d72175885430cf692ee");
+    
+    console.log(student);
+
+
+    const students = await studentModel.find({name : "Vishwa"});
+    console.log(students);
+
+
+    const vishwaStudent = await studentModel.findOne({name : "Vishwa"});
+    console.log(vishwaStudent);
 }
