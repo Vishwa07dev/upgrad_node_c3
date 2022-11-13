@@ -34,7 +34,20 @@ exports.signup = async (req, res) => {
     /**
      * Return the response to the client
      */
-    res.status(201).send(userCreated);
+
+    /**
+     * I can take our unnecessary details before returning to the client
+     */
+    const signupResp = {
+        name : userCreated.name,
+        userId : userCreated.userId,
+        email : userCreated.email,
+        userType : userCreated.userType,
+        userStatus : userCreated.userStatus,
+        createdAt : userCreated.createdAt,
+        updatedAt : userCreated.updatedAt
+    }
+    res.status(201).send(signupResp);
 }
 
 
