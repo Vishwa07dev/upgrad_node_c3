@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const userModel = require("../models/user.model");
 
 /**
  * Logic to verify the token passed by the client
@@ -8,7 +9,7 @@ verifyToken = (req, res, next) => {
 
     //Extract the token from the headers
     let token = req.headers["x-access-token"];
-    
+    console.log(token);
     if(!token){
         return res.status(403).send({
             message : "No token was provided"
@@ -25,6 +26,7 @@ verifyToken = (req, res, next) => {
         //I am getting the userId info from token and setting
         //it in the request object to be used later
         req.userId = decoded.id // my user id
+        console.log(req.userId);
         next(); // Give the control to the controller
 
 
@@ -32,17 +34,24 @@ verifyToken = (req, res, next) => {
     
 }
 
-checkIfAdmin = ( req, res, next)=>{
-    /**
-     * Implement this function/middleware, which will check
-     * if the calling user is admin or not
-     * 
-     * If not admin, it should return response saying you
-     * are not allowed to make a call
-     */
+checkIfAdmin = async ( req, res, next)=>{
+    
+    // I need to load the user first - userId
+    const user = await userModel.findOne({userId : req.userId});
+    console.log(user);
+    console.log(user.userType) ;
+    if(user && user.userType == "ADMIN"){
+        next(); // Go to the controller
+    }else{
+        return res.status(403).send({
+            message : "Only ADMIN user is allowed to call this API"
+        })
+    }
+
 }
 
 
 module.exports = {
-    verifyToken : verifyToken
+    verifyToken : verifyToken,
+    checkIfAdmin : checkIfAdmin
 }

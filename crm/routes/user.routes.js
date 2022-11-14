@@ -3,5 +3,5 @@ const authjwt = require("../middlewares/authjwt");
 
 module.exports = (app)=>{
 
-    app.get("/crm/api/v1/users",[authjwt.verifyToken], userController.findAll);
+    app.get("/crm/api/v1/users",[authjwt.verifyToken, authjwt.checkIfAdmin], userController.findAll);
 }
