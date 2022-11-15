@@ -16,6 +16,10 @@ exports.findAll = async (req, res) =>{
         queryObj.userType = req.query.userType ;
     }
     
+    if(req.query.userStatus){
+        queryObj.userStatus = req.query.userStatus
+    }
+    
     const users = await userModel.find(queryObj);
 
     const usersRes = [];
