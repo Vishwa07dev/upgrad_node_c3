@@ -9,8 +9,14 @@
 const userModel = require("../models/user.model")
 
 exports.findAll = async (req, res) =>{
+
+    const queryObj = {};
+
+    if(req.query.userType){
+        queryObj.userType = req.query.userType ;
+    }
     
-    const users = await userModel.find();
+    const users = await userModel.find(queryObj);
 
     const usersRes = [];
 
@@ -25,4 +31,20 @@ exports.findAll = async (req, res) =>{
     })
 
     return res.status(200).send(usersRes);
+}
+
+
+/**
+ * Write a method to update user status
+ */
+exports.update =  async (req, res)=>{
+   
+   const user = await  userModel.findOne({userId : req.params.userId});
+ 
+   user.userStatus = req.body.userStatus ;
+   const savedUser = await user.save();
+
+   res.status(200).send({
+       message : "User status was successfully updated"
+   });
 }
