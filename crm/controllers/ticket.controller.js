@@ -32,3 +32,43 @@ exports.createTicket = async (req, res)=>{
     res.status(201).send(ticketCreated);
 
 }
+
+exports.getAllTickets = async (req, res) => {
+
+    const queryObj = {} ;
+    
+    const user = await userModel.findOne({userId : req.userId});
+
+    if(user.userStatus == "CUSTOMER"){
+        queryObj.reporter = req.userId ;
+    }else if( user.userStatus == "ENGINEER"){
+        queryObj["$or"] = [ {reporter : req.userId} ,{ assignee : req.userId}]
+    }else{
+        // do nothing
+    }
+
+    const tickets = await ticketModel.find(queryObj);
+
+    res.status(200).send(tickets);
+    
+
+}
+
+/**
+ *  Define a controller method to fetch the ticket based on the ticket id
+ */
+
+exports.getOneTicket = async (req, res)=>{
+
+
+    // Fetch the ticket id
+    const ticketId = req.params.ticketId ;
+
+    //Fetch the ticket based on the ticket id and return it
+    const ticket = await ticketModel.findOne({
+        _id : ticketId
+    });
+
+    console.log(ticket);
+    res.status(200).send(ticket);
+}
